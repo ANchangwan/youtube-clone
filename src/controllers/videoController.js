@@ -1,9 +1,17 @@
-export const trending = (req, res) => res.send("Home paoge videos");
-export const see = (req, res) => res.send("watch");
-export const search = (req, res) => res.send("search");
+const fakeUser = {
+  username: "anchangwan",
+  loggedIn: true,
+};
+
+export const trending = (req, res) => {
+  return res.render("home", { pageTitle: "home"});
+};
+export const see = (req, res) => res.render("watch", { pageTitle: "watch" });
+export const search = (req, res) => res.send("search", { pageTitle: "search" });
 
 export const edit = (req, res) => {
-  res.send("edit");
+  res.render("edit", { pageTitle: "edit" });
 };
-export const upload = (req, res) => res.send("upload");
-export const deleteVideo = (req, res) => res.send("deleteVideo");
+export const upload = (req, res) => res.send("upload", { pageTitle: "upload" });
+export const deleteVideo = (req, res) =>
+  res.send("deleteVideo", { pageTitle: "deleteVideo" });
