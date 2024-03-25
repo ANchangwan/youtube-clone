@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const videoSchem = new mongoose.Schema({
   title: String,
   description: String,
-  createdAts: Date,
+  createdAt: Date,
   hashtags: [{ type: String }],
   meta: {
     vies: Number,

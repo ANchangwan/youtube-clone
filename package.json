@@ -6,7 +6,7 @@
     "url": "git+https://github.com/ANchangwan/youtube-clone.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node src/init.js"
   },
   "author": "Anchangwan",
   "license": "MIT",
@@ -18,6 +18,7 @@
     "express": "^4.18.3",
     "mongoose": "^8.2.3",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
     "pug": "^3.0.2"
   },
   "devDependencies": {

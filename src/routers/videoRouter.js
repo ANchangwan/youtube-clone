@@ -5,7 +5,6 @@ import {
   postEdit,
   getUpload,
   postUpload,
-  deleteVideo,
 } from "../controllers/videoController";
 
 const videoRouter = express.Router();
