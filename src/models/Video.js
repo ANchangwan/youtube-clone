@@ -11,6 +11,12 @@ const videoSchem = new mongoose.Schema({
   },
 });
 
+videoSchem.pre("save", async function () {
+  this.hashtags = this.hashtags[0]
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
 const Video = mongoose.model("Video", videoSchem);
 
 export default Video;
