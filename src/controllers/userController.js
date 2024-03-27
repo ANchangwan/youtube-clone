@@ -5,15 +5,30 @@ export const getJoin = (req, res) => {
 };
 export const postJoin = async (req, res) => {
   const {
-    body: { name, username, email, password, location },
+    body: { name, username, email, password, password2, location },
   } = req;
+  const pageTitle = "Join";
+  const exists = await User.exists({ $or: [{ username }, { email }] });
+  if (password !== password2) {
+    return res.render("join", {
+      pageTitle: pageTitle,
+      erroMessage: "패스워드가 맞지 않습니다.",
+    });
+  }
+  if (exists) {
+    return res.render("join", {
+      pageTitle: pageTitle,
+      erroMessage: "존재하는 유저입니다!",
+    });
+  }
+
   await User.create({
     name,
     username,
     email,
     password,
     location,
-  })
+  });
 
   return res.redirect("/login");
 };
