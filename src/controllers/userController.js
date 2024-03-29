@@ -57,9 +57,10 @@ export const postLogin = async (req, res) => {
       errorMessage: "존재하지 않는 유저입니다.",
     });
   }
-  console.log(user.password);
+  req.session.loggedIn = true;
+  req.session.user = user;
   const ok = await bcrypt.compare(password, user.password);
-  console.log(ok);
+
   if (!ok) {
     return res.status(400).render("login", {
       pageTitle,
