@@ -71,7 +71,14 @@ export const postLogin = async (req, res) => {
   res.redirect("/");
 };
 
-export const logout = (req, res) =>
-  res.render("logout", { pageTitle: "logout" });
+export const logout = (req, res) => {
+  req.session.destroy();
+  console.log("session out");
+  return res.redirect("/");
+};
 
 export const see = (req, res) => res.render("see", { pageTitle: "see" });
+
+export const editProfile = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "edit-profile" });
+};

@@ -1,5 +1,10 @@
 import express from "express";
-import { remove, logout, see } from "../controllers/userController";
+import {
+  remove,
+  logout,
+  see,
+  editProfile,
+} from "../controllers/userController";
 import { getEdit } from "../controllers/videoController";
 
 const userRouter = express.Router();
