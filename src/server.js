@@ -7,7 +7,6 @@ import userRouter from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares";
 import MongoStore from "connect-mongo";
 
-
 const app = express();
 const logger = morgan("dev");
 
@@ -24,7 +23,8 @@ app.use(
 );
 app.use(localsMiddleware);
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 app.use("/", rootRouter);
