@@ -6,11 +6,7 @@ import { protectorMiddleware } from "../middlewares";
 const userRouter = express.Router();
 
 userRouter.get("/logout", protectorMiddleware, logout);
-userRouter
-  .route("/edit")
-  .all(protectorMiddleware)
-  .get(getUserEdit)
-  .post(postUserEdit);
+userRouter.route("/edit").get(getUserEdit).post(postUserEdit);
 userRouter.get("/delete", remove);
 userRouter.get(":id(\\d+)", see);
 
