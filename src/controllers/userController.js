@@ -79,6 +79,10 @@ export const logout = (req, res) => {
 
 export const see = (req, res) => res.render("see", { pageTitle: "see" });
 
-export const editProfile = (req, res) => {
+export const getUserEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "edit-profile" });
+};
+
+export const postUserEdit = (req, res) => {
+  return res.render("edit-profile");
 };

@@ -1,16 +1,16 @@
 import express from "express";
-import {
-  remove,
-  logout,
-  see,
-  editProfile,
-} from "../controllers/userController";
-import { getEdit } from "../controllers/videoController";
+import { remove, logout, see } from "../controllers/userController";
+import { getUserEdit, postUserEdit } from "../controllers/userController";
+import { protectorMiddleware } from "../middlewares";
 
 const userRouter = express.Router();
 
-userRouter.get("/logout", logout);
-userRouter.get("/edit", getEdit);
+userRouter.get("/logout", protectorMiddleware, logout);
+userRouter
+  .route("/edit")
+  .all(protectorMiddleware)
+  .get(getUserEdit)
+  .post(postUserEdit);
 userRouter.get("/delete", remove);
 userRouter.get(":id(\\d+)", see);
 
