@@ -86,16 +86,35 @@ export const getUserEdit = (req, res) => {
 export const postUserEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, email: sessionEmail, username: sessionUsername },
     },
   } = req;
-
-  const { name, email, username, location } = req.body;
-  await User.findByIdAndUpdate(_id, {
-    name,
-    email,
-    username,
-    location,
-  });
-  return res.render("edit-profile");
+  const {
+    body: { name, email, username, location },
+  } = req;
+  if (email === sessionEmail || username === sessionUsername) {
+    return res.status(400).render("edit-profile", {
+      pageTitle: "edit-profile",
+      sessionError: true,
+      sessionMessage:
+        email === sessionEmail
+          ? "aready email"
+          : username === sessionUsername
+          ? "aready username"
+          : "in don know",
+    });
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  console.log(req.session.user);
+  return res.redirect("/users/edit");
 };
