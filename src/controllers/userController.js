@@ -51,6 +51,7 @@ export const postLogin = async (req, res) => {
   } = req;
   const pageTitle = "Login";
   const user = await User.findOne({ username });
+
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -92,29 +93,66 @@ export const postUserEdit = async (req, res) => {
   const {
     body: { name, email, username, location },
   } = req;
-  if (email === sessionEmail || username === sessionUsername) {
-    return res.status(400).render("edit-profile", {
-      pageTitle: "edit-profile",
-      sessionError: true,
-      sessionMessage:
-        email === sessionEmail
-          ? "aready email"
-          : username === sessionUsername
-          ? "aready username"
-          : "in don know",
+  if (_id)
+    if (email === sessionEmail || username === sessionUsername) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "edit-profile",
+        sessionError: true,
+        sessionMessage:
+          email === sessionEmail
+            ? "aready email"
+            : username === sessionUsername
+            ? "aready username"
+            : undefined,
+      });
+    }
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        email,
+        username,
+        location,
+      },
+      { new: true }
+    );
+    req.session.user = updatedUser;
+    console.log(req.session.user);
+    return res.redirect("/users/edit");
+  } catch (e) {
+    return res.status(400).redirect("/users/edit");
+  }
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, confirmPassword },
+  } = req;
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      erroMessage: "기존 비밀번호와 일치하지 않습니다!!",
     });
   }
-  const updatedUser = await User.findByIdAndUpdate(
-    _id,
-    {
-      name,
-      email,
-      username,
-      location,
-    },
-    { new: true }
-  );
-  req.session.user = updatedUser;
-  console.log(req.session.user);
-  return res.redirect("/users/edit");
+  if (newPassword !== confirmPassword) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      erroMessage: "비밀번호가 일치하지 않습니다!!",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  return res.redirect("/users/logout");
 };
