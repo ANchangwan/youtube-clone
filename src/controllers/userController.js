@@ -87,30 +87,30 @@ export const getUserEdit = (req, res) => {
 export const postUserEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, avatarUrl,email: sessionEmail, username: sessionUsername },
+      user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
     },
   } = req;
   const {
     body: { name, email, username, location },
     file,
   } = req;
-  // if (_id)
-  //   if (email === sessionEmail || username === sessionUsername) {
-  //     return res.status(400).render("edit-profile", {
-  //       pageTitle: "edit-profile",
-  //       sessionError: true,
-  //       sessionMessage:
-  //         email === sessionEmail
-  //           ? "aready email"
-  //           : username === sessionUsername
-  //           ? "aready username"
-  //           : undefined,
-  //     });
-  //   }
+  if (sessionEmail === email) {
+    return res.status(400).render("edit-profile", {
+      pageTitle: "edit-profile",
+      erroMessage: "이미 존재하는 이메일입니다.",
+    });
+  }
+  if (sessionUsername === username) {
+    return res.status(400).render("edit-profile", {
+      pageTitle: "edit-profile",
+      erroMessage: "이미 존재하는 username입니다.",
+    });
+  }
   try {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
+        avatarUrl: file ? file.path : avatarUrl,
         name,
         email,
         username,
