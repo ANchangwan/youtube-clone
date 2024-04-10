@@ -87,25 +87,26 @@ export const getUserEdit = (req, res) => {
 export const postUserEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionEmail, username: sessionUsername },
+      user: { _id, avatarUrl,email: sessionEmail, username: sessionUsername },
     },
   } = req;
   const {
     body: { name, email, username, location },
+    file,
   } = req;
-  if (_id)
-    if (email === sessionEmail || username === sessionUsername) {
-      return res.status(400).render("edit-profile", {
-        pageTitle: "edit-profile",
-        sessionError: true,
-        sessionMessage:
-          email === sessionEmail
-            ? "aready email"
-            : username === sessionUsername
-            ? "aready username"
-            : undefined,
-      });
-    }
+  // if (_id)
+  //   if (email === sessionEmail || username === sessionUsername) {
+  //     return res.status(400).render("edit-profile", {
+  //       pageTitle: "edit-profile",
+  //       sessionError: true,
+  //       sessionMessage:
+  //         email === sessionEmail
+  //           ? "aready email"
+  //           : username === sessionUsername
+  //           ? "aready username"
+  //           : undefined,
+  //     });
+  //   }
   try {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
@@ -118,7 +119,6 @@ export const postUserEdit = async (req, res) => {
       { new: true }
     );
     req.session.user = updatedUser;
-    console.log(req.session.user);
     return res.redirect("/users/edit");
   } catch (e) {
     return res.status(400).redirect("/users/edit");

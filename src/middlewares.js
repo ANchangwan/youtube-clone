@@ -8,7 +8,7 @@ export const localsMiddleware = (req, res, next) => {
   next();
 };
 
-export const multerMiddleware = multer({ dest: "upload/" });
+export const multerMiddleware = multer({ dest: "uploads/" });
 
 export const protectorMiddleware = (req, res, next) => {
   if (req.session.loggedIn) {

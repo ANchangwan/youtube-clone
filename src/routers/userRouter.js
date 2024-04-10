@@ -7,12 +7,16 @@ import {
   postChangePassword,
 } from "../controllers/userController";
 import { getUserEdit, postUserEdit } from "../controllers/userController";
-import { protectorMiddleware } from "../middlewares";
+import { multerMiddleware, protectorMiddleware } from "../middlewares";
 
 const userRouter = express.Router();
 
 userRouter.get("/logout", protectorMiddleware, logout);
-userRouter.route("/edit").get(getUserEdit).post(postUserEdit);
+userRouter
+  .route("/edit")
+  .all(protectorMiddleware)
+  .get(getUserEdit)
+  .post(multerMiddleware.single("avatar"), postUserEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)
