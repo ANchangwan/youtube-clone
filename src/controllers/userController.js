@@ -78,7 +78,12 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const see = (req, res) => res.render("see", { pageTitle: "see" });
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  console.log(user);
+  return res.render("users/profile", { pageTitle: `${user.name}`, user });
+};
 
 export const getUserEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "edit-profile" });
