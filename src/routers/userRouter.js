@@ -2,7 +2,7 @@ import express from "express";
 import {
   remove,
   logout,
-  see,
+  profile,
   getChangePassword,
   postChangePassword,
 } from "../controllers/userController";
@@ -23,6 +23,6 @@ userRouter
   .get(getChangePassword)
   .post(postChangePassword);
 userRouter.get("/delete", remove);
-userRouter.get("/:id", see);
+userRouter.get("/:id", profile);
 
 export default userRouter;

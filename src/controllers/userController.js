@@ -78,11 +78,15 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const see = async (req, res) => {
+export const profile = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
-  console.log(user);
-  return res.render("users/profile", { pageTitle: `${user.name}`, user });
+  if (!user) {
+    return res.status(400).render("404", { pageTitle: "User Not Found" });
+  }
+  return res
+    .status(200)
+    .render("users/profile", { pageTitle: user.name, user });
 };
 
 export const getUserEdit = (req, res) => {
@@ -99,13 +103,14 @@ export const postUserEdit = async (req, res) => {
     body: { name, email, username, location },
     file: { path },
   } = req;
-  console.log(path);
+
   if (sessionEmail === email) {
     return res.status(400).render("edit-profile", {
       pageTitle: "edit-profile",
       sessionError: "이미 존재하는 이메일입니다.",
     });
   }
+
   if (sessionUsername === username) {
     return res.status(400).render("edit-profile", {
       pageTitle: "edit-profile",
