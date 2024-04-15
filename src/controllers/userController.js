@@ -92,25 +92,26 @@ export const postUserEdit = async (req, res) => {
   } = req;
   const {
     body: { name, email, username, location },
-    file,
+    file: { path },
   } = req;
+  console.log(path);
   if (sessionEmail === email) {
     return res.status(400).render("edit-profile", {
       pageTitle: "edit-profile",
-      erroMessage: "이미 존재하는 이메일입니다.",
+      sessionError: "이미 존재하는 이메일입니다.",
     });
   }
   if (sessionUsername === username) {
     return res.status(400).render("edit-profile", {
       pageTitle: "edit-profile",
-      erroMessage: "이미 존재하는 username입니다.",
+      sessionError: "이미 존재하는 username입니다.",
     });
   }
   try {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
       {
-        avatarUrl: file ? file.path : avatarUrl,
+        avatarUrl: path ? path : avatarUrl,
         name,
         email,
         username,

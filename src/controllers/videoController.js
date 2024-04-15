@@ -9,6 +9,7 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
+
   if (video) {
     return res.render("watch", { pageTitle: video.title, video });
   }
@@ -46,9 +47,11 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const file = req.file;
   const { title, description, hashtags } = req.body;
   try {
     await Video.create({
+      fileUrl: file.path,
       title,
       description,
       hashtags,
