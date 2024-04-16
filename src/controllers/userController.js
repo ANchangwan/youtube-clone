@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import Video from "../models/Video";
 
 export const getJoin = (req, res) => {
   res.render("join", { pageTitle: "Join" });
@@ -84,9 +85,11 @@ export const profile = async (req, res) => {
   if (!user) {
     return res.status(400).render("404", { pageTitle: "User Not Found" });
   }
+  const videos = await Video.find({ owner: user._id });
+  
   return res
     .status(200)
-    .render("users/profile", { pageTitle: user.name, user });
+    .render("users/profile", { pageTitle: user.name, videos });
 };
 
 export const getUserEdit = (req, res) => {
