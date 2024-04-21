@@ -1,0 +1,79 @@
+.video__data {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    .video__title {
+      font-size: 26px;
+      margin-bottom: 5px;
+    }
+    .video__createdAt {
+      font-size: 12px;
+    }
+    .video__owner {
+      margin-bottom: 5px;
+      font-size: 14px;
+      a {
+        color: cornflowerblue;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .video_comments{
+    display: flex;
+    flex-direction: column;
+    margin-left: 300px;
+    padding-right:700px;
+    border:none;
+    .video__comment-form{
+      textarea{
+        border-radius: 5px;
+        width:1fr;
+        height:100px;
+        margin:10px;
+        padding:0 100px;
+        padding-left: auto;
+        padding-right: auto;
+      }
+      button{
+        align-items: center;
+        display: block;
+        border-radius: 5px;
+        background-color: #00BFFF;
+        color: white;
+        font-size: large;
+        text-align: center;
+        border:none;
+        width:100px;
+        height:px;
+        box-shadow: 3px 3px 3px rgb(11, 119, 243);
+        transition-duration: 0.3s;
+      }
+      button:active{
+        padding: 3px 0;
+        height:80%;
+        box-shadow: none;
+      }
+    }
+  }
+  .video__comments {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    
+    .video__comment {
+      padding: 10px;
+      border-radius: 9999px;
+      background-color: white;
+      text-align: center;
+      font-weight: bold;
+      color: black;
+      margin-bottom: 10px;
+    }
+    .commentDeleteBtn{
+        display:inline;
+    }
+  }
