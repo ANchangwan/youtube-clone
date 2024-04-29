@@ -38,7 +38,7 @@ block content
                 textarea(placeholder="댓글을 입력해주세요")
                 button Add comment
     div.video__comments
-        ul 
+         ul 
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment.id)
                     i.fas.fa-comment
