@@ -1,5 +1,7 @@
 import Video from "../models/Video";
 import User from "../models/User";
+import { create } from "connect-mongo";
+import Comment from "../models/Comment";
 
 export const home = async (req, res) => {
   const videos = await Video.find({}).sort({ createdAt: "desc" });
@@ -117,9 +119,9 @@ export const search = async (req, res) => {
 
 export const registerView = async (req, res) => {
   const { id } = req.params;
-  console.log("registerView");
+
   const video = await Video.findById(id);
-  console.log(video);
+
   if (!video) {
     return res.sendStatus(404);
   }
@@ -127,4 +129,29 @@ export const registerView = async (req, res) => {
   video.meta.views = video.meta.views + 1;
   await video.save();
   return res.sendStatus(200);
+};
+
+export const createComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.sendStatus(400);
+  }
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+
+  return res.sendStatus(201);
+};
+
+export const deleteComment = (req, res) => {
+  console.log(req.param, "hi");
+
+  return res.end();
 };
